@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.fuzzychainsaw.view.MultiColorProcess
 import com.example.fuzzychainsaw.view.ProcessBar
+import com.example.fuzzychainsaw.view.cloud.Nebula
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -17,6 +18,10 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+    }
+
+    private fun processBar() {
         processBar = findViewById(R.id.process)
         processBar.apply {
             process = MultiColorProcess(
@@ -45,5 +50,9 @@ class MainActivity : AppCompatActivity() {
                 percentage += 1
             }
         }
+    }
+
+    private fun Nebula() {
+        findViewById<Nebula>(R.id.nebula)
     }
 }
