@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <com.example.fuzzychainsaw.view.RoundImage
+        android:id="@+id/roundimage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:scaleType="centerInside"
+        app:srcCompat="@drawable/icon"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/process"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
+
     <com.example.fuzzychainsaw.view.ProcessBar
         android:id="@+id/process"
         android:layout_width="match_parent"
