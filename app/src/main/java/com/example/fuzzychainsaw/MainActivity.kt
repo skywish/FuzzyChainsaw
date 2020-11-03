@@ -1,58 +1,55 @@
 package com.example.fuzzychainsaw
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.os.Bundle
 import android.os.SystemClock
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
+import androidx.datastore.DataStore
+import androidx.datastore.preferences.Preferences
+import androidx.datastore.preferences.createDataStore
+import androidx.datastore.preferences.edit
+import androidx.datastore.preferences.preferencesKey
+import com.example.fuzzychainsaw.util.FPSMonitor
 import com.example.fuzzychainsaw.view.MultiColorProcess
 import com.example.fuzzychainsaw.view.ProcessBar
+import com.example.fuzzychainsaw.view.TestView
 import com.example.fuzzychainsaw.view.cloud.Nebula
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity() {
     private lateinit var processBar: ProcessBar
     private lateinit var button: Button
+    private lateinit var testView: TestView
+    private lateinit var fpsview: TextView
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        fpsview = findViewById(R.id.fps)
+        FPSMonitor.listener.add {
+            fpsview.text = "FPS: $it"
+        }
+        FPSMonitor.start()
     }
 
-    private fun processBar() {
-        processBar = findViewById(R.id.process)
-        processBar.apply {
-            process = MultiColorProcess(
-                mapOf(
-                    0..19 to intArrayOf(0x8000FFE5.toInt(), 0x80E7FFAA.toInt()),
-                    20..59 to intArrayOf(0xFF00FFE5.toInt(), 0xFFE7FFAA.toInt()),
-                    60..79 to intArrayOf(0xCCFE579B.toInt(), 0xCCF9FF19.toInt()),
-                    80..100 to intArrayOf(0xFFFE579B.toInt(), 0xFFF9FF19.toInt())
-                )
-            )
-        }
-        button = findViewById(R.id.button)
-        button.setOnClickListener {
-            mock()
-        }
-        mock()
-    }
-
-    // 模拟网络下载进度条
-    private fun mock() {
-        var percentage = 0
-        CoroutineScope(Dispatchers.IO).launch {
-            while (percentage <= 100) {
-                processBar.percentage = percentage
-                SystemClock.sleep(50)
-                percentage += 1
+    private fun animationSet() {
+        val objectAnimator =
+            ObjectAnimator.ofPropertyValuesHolder(
+                testView,
+                PropertyValuesHolder.ofFloat("scaleX", 1f),
+                PropertyValuesHolder.ofFloat("scaleY", 1f),
+                PropertyValuesHolder.ofFloat("alpha", 1f),
+            ).apply {
+                repeatCount = -1
+                duration = 2000
             }
-        }
-    }
-
-    private fun Nebula() {
-        findViewById<Nebula>(R.id.nebula)
+        objectAnimator.start()
     }
 }
