@@ -2,6 +2,7 @@ package com.example.fuzzychainsaw
 
 import android.animation.ObjectAnimator
 import android.animation.PropertyValuesHolder
+import android.content.Intent
 import android.os.Bundle
 import android.os.SystemClock
 import android.widget.Button
@@ -32,24 +33,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        fpsview = findViewById(R.id.fps)
+//        fpsview = findViewById(R.id.fps)
+//        fpsview.setOnClickListener {
+//            startActivity(Intent(this, PipActivity::class.java))
+//        }
+    }
+
+    private fun monitor() {
         FPSMonitor.listener.add {
             fpsview.text = "FPS: $it"
         }
         FPSMonitor.start()
-    }
-
-    private fun animationSet() {
-        val objectAnimator =
-            ObjectAnimator.ofPropertyValuesHolder(
-                testView,
-                PropertyValuesHolder.ofFloat("scaleX", 1f),
-                PropertyValuesHolder.ofFloat("scaleY", 1f),
-                PropertyValuesHolder.ofFloat("alpha", 1f),
-            ).apply {
-                repeatCount = -1
-                duration = 2000
-            }
-        objectAnimator.start()
     }
 }
